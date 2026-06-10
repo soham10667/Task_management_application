@@ -393,7 +393,7 @@ function App() {
                   className="form-control"
                   placeholder="John Doe"
                   value={authName}
-                  onChange={(e) => setAuthName(e.target.value)}
+                  onChange={(e) => { setAuthName(e.target.value); setAuthError(''); }}
                   disabled={authSubmitting}
                 />
               </div>
@@ -406,7 +406,7 @@ function App() {
                 className="form-control"
                 placeholder="yourname@example.com"
                 value={authEmail}
-                onChange={(e) => setAuthEmail(e.target.value)}
+                onChange={(e) => { setAuthEmail(e.target.value); setAuthError(''); }}
                 disabled={authSubmitting}
               />
             </div>
@@ -419,7 +419,7 @@ function App() {
                   className="form-control"
                   placeholder="••••••••"
                   value={authPassword}
-                  onChange={(e) => setAuthPassword(e.target.value)}
+                  onChange={(e) => { setAuthPassword(e.target.value); setAuthError(''); }}
                   disabled={authSubmitting}
                   style={{ width: '100%', paddingRight: '45px' }}
                 />
@@ -464,7 +464,7 @@ function App() {
                     className="form-control"
                     placeholder="••••••••"
                     value={authConfirmPassword}
-                    onChange={(e) => setAuthConfirmPassword(e.target.value)}
+                    onChange={(e) => { setAuthConfirmPassword(e.target.value); setAuthError(''); }}
                     disabled={authSubmitting}
                     style={{ width: '100%', paddingRight: '45px' }}
                   />
@@ -913,7 +913,7 @@ function App() {
                   className="form-control"
                   placeholder="Review pull request..."
                   value={taskTitle}
-                  onChange={(e) => setTaskTitle(e.target.value)}
+                  onChange={(e) => { setTaskTitle(e.target.value); setFormError(''); }}
                   disabled={formSubmitting}
                 />
               </div>
@@ -925,7 +925,7 @@ function App() {
                   rows="6"
                   placeholder="Examine frontend components and styling rules..."
                   value={taskDesc}
-                  onChange={(e) => setTaskDesc(e.target.value)}
+                  onChange={(e) => { setTaskDesc(e.target.value); setFormError(''); }}
                   disabled={formSubmitting}
                   style={{ resize: 'vertical' }}
                 ></textarea>
@@ -939,7 +939,7 @@ function App() {
                     className="form-control"
                     placeholder="Name of assignee..."
                     value={taskAssignedTo}
-                    onChange={(e) => setTaskAssignedTo(e.target.value)}
+                    onChange={(e) => { setTaskAssignedTo(e.target.value); setFormError(''); }}
                     disabled={formSubmitting}
                   />
                 </div>
@@ -948,7 +948,7 @@ function App() {
                   <select
                     className="form-control"
                     value={taskPriority}
-                    onChange={(e) => setTaskPriority(e.target.value)}
+                    onChange={(e) => { setTaskPriority(e.target.value); setFormError(''); }}
                     disabled={formSubmitting}
                   >
                     <option value="Low">Low</option>
@@ -963,7 +963,7 @@ function App() {
                 <select
                   className="form-control"
                   value={taskStatus}
-                  onChange={(e) => setTaskStatus(e.target.value)}
+                  onChange={(e) => { setTaskStatus(e.target.value); setFormError(''); }}
                   disabled={formSubmitting}
                 >
                   <option value="Not Started">Not Started</option>
@@ -980,7 +980,7 @@ function App() {
                     type="date"
                     className="form-control"
                     value={taskDueDate}
-                    onChange={(e) => setTaskDueDate(e.target.value)}
+                    onChange={(e) => { setTaskDueDate(e.target.value); setFormError(''); }}
                     disabled={formSubmitting}
                   />
                 </div>
@@ -990,7 +990,7 @@ function App() {
                     type="time"
                     className="form-control"
                     value={taskDueTime}
-                    onChange={(e) => setTaskDueTime(e.target.value)}
+                    onChange={(e) => { setTaskDueTime(e.target.value); setFormError(''); }}
                     disabled={formSubmitting}
                   />
                 </div>
