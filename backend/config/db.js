@@ -1,16 +1,57 @@
 const mongoose = require('./mongoose');
+const dns = require('dns');
+
+const checkHostReachable = (uri) => {
+  return new Promise((resolve) => {
+    try {
+      const cleanedUri = uri.replace(/^mongodb\+srv:\/\//, 'http://').replace(/^mongodb:\/\//, 'http://');
+      const parsed = new URL(cleanedUri);
+      const host = parsed.hostname;
+
+      if (!host || host === '127.0.0.1' || host === 'localhost') {
+        return resolve(true);
+      }
+
+      const timer = setTimeout(() => {
+        resolve(false);
+      }, 500); // 500ms threshold for fast fallback
+
+      dns.lookup(host, (err) => {
+        clearTimeout(timer);
+        if (err) {
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+    } catch (e) {
+      resolve(false);
+    }
+  });
+};
 
 const connectDB = async () => {
   try {
-    const useRealMongo = mongoose.getUseRealMongo ? mongoose.getUseRealMongo() : true;
-    
+    let useRealMongo = mongoose.getUseRealMongo ? mongoose.getUseRealMongo() : true;
+    const uri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/taskmanager';
+
+    if (useRealMongo) {
+      console.log('Checking database host reachability...');
+      const isReachable = await checkHostReachable(uri);
+      if (!isReachable) {
+        console.warn('Database host is unreachable or offline.');
+        if (mongoose.switchToMock) {
+          mongoose.switchToMock();
+          useRealMongo = false;
+        }
+      }
+    }
+
     if (useRealMongo) {
       console.log('Attempting to connect to MongoDB Atlas...');
       // Set serverSelectionTimeoutMS to 3 seconds to avoid waiting forever
       const conn = await mongoose.connect(
-        process.env.MONGODB_URI || 
-        process.env.MONGO_URI || 
-        'mongodb://127.0.0.1:27017/taskmanager',
+        uri,
         { serverSelectionTimeoutMS: 3000 }
       );
       console.log(`MongoDB Connected: ${conn.connection.host}`);
@@ -38,4 +79,5 @@ const connectDB = async () => {
 };
 
 module.exports = connectDB;
+
 
